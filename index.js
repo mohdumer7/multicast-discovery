@@ -128,13 +128,3 @@ class DeviceDiscovery extends EventEmitter {
     this.intervals.forEach((intervalId) => clearInterval(intervalId));
   }
 }
-
-// Usage example:
-const deviceDiscovery = new DeviceDiscovery({
-  deviceTimeoutThreshold: 3000,
-  serviceType: "adb-tls-connect",
-});
-
-deviceDiscovery.on("Update", (devices) => {
-  console.log("Devices have changed:", devices);
-});
