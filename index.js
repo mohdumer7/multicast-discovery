@@ -128,3 +128,5 @@ class DeviceDiscovery extends EventEmitter {
     this.intervals.forEach((intervalId) => clearInterval(intervalId));
   }
 }
+
+module.exports = DeviceDiscovery;
