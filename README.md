@@ -7,7 +7,7 @@ The structure is designed to be modular and generic, allowing for easy customiza
 
 ### INSTALLATION
 ```shell
-npm i
+npm install device-discovery
 ```
 
 ### USAGE
