@@ -114,7 +114,7 @@ class DeviceDiscovery extends EventEmitter {
   }
 
   emitError(errorMessage) {
-    this.emit("error", errorMessage);
+    this.emit("Device Discovery Error", errorMessage);
   }
 
   setupIntervals() {
