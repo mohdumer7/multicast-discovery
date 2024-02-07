@@ -36,9 +36,9 @@ deviceDiscovery.on('Device Discovery Error', (error) => {
 1. Update
 2. Error
 
-#### This is an open-source Project, Please feel free to contribute ❤️
 ### Options 
 
 1. deviceTimeoutThreshold (Milliseconds)
 2. serviceType ([refer](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml))
 
+#### This is an open-source Project, Please feel free to contribute ❤️
