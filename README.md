@@ -36,6 +36,7 @@ deviceDiscovery.on('Device Discovery Error', (error) => {
 1. Update
 2. Error
 
+#### This is an open-source Project, Please feel free to contribute ❤️
 ### Options 
 
 1. deviceTimeoutThreshold (Milliseconds)
