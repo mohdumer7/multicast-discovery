@@ -2,14 +2,35 @@
   "name": "multicast-device-discovery",
   "version": "1.0.0",
   "description": "This is a package to find nearby available devices to multicast",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Mohammed Umer",
   "license": "ISC",
   "dependencies": {
     "bonjour": "^3.5.0",
-    "events": "^3.3.0"
+    "browserify-fs": "^1.0.0",
+    "buffer": "^6.0.3",
+    "dgram-browserify": "^0.0.13",
+    "dns-packet": "^5.6.1",
+    "events": "^3.3.0",
+    "https-browserify": "^1.0.0",
+    "multicast-dns": "^7.2.5",
+    "node-libs-browser": "^2.2.1",
+    "os-browserify": "^0.3.0",
+    "stream-http": "^3.2.0",
+    "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
+    "babel-loader": "^8.3.0",
+    "node-polyfill-webpack-plugin": "^3.0.0",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
   }
 }
