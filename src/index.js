@@ -13,7 +13,9 @@ class DeviceDiscovery extends EventEmitter {
     this.lastUpEventTime = null;
     this.serviceType = options.serviceType || "adb-tls-connect";
     this.intervals = [];
+  }
 
+  startDeviceDiscovery() {
     this.setupIntervals();
     this.startBonjourDiscovery();
   }
