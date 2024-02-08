@@ -1,5 +1,6 @@
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const webpack = require("webpack");
+const path = require("path");
 module.exports = {
   mode: "development",
   entry: "./src/index.js",
@@ -30,9 +31,13 @@ module.exports = {
     ],
   },
   plugins: [
-    // new NodePolyfillPlugin(),
+    new NodePolyfillPlugin(),
     new webpack.ProvidePlugin({
       child_process: "child_process_mock", // Replace with a suitable mock
     }),
   ],
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+  },
 };
