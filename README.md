@@ -12,21 +12,23 @@ npm install multicast-device-discovery
 
 ### USAGE
 ```javascript
-const DeviceDiscovery = require("device-discovery");
+const DeviceDiscovery = require("multicast-device-discovery");
 
 const options = {
   deviceTimeoutThreshold: 3000,
   serviceType: "adb-tls-connect",
-}
+};
 const deviceDiscovery = new DeviceDiscovery(options);
 
 deviceDiscovery.on("Update", (devices) => {
   console.log("Devices have changed:", devices);
 });
 
-deviceDiscovery.on('Device Discovery Error', (error) => {
+deviceDiscovery.on("Device Discovery Error", (error) => {
   console.error(`An error occurred: ${error}`);
 });
+
+deviceDiscovery.startDeviceDiscovery();
 
 //deviceDiscovery.cleanup() //this function can be used for cleanup
 ```
