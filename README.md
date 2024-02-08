@@ -7,7 +7,7 @@ The structure is designed to be modular and generic, allowing for easy customiza
 
 ### INSTALLATION
 ```shell
-npm install device-discovery
+npm install multicast-device-discovery
 ```
 
 ### USAGE
