@@ -127,6 +127,9 @@ class DeviceDiscovery extends EventEmitter {
   }
   cleanup() {
     // Clear all intervals
+    if (this.browser) {
+        this.browser.stop();
+      }
     this.intervals.forEach((intervalId) => clearInterval(intervalId));
   }
 }
