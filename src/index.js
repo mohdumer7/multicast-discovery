@@ -17,7 +17,6 @@ class DeviceDiscovery extends EventEmitter {
 
   startDeviceDiscovery() {
     this.setupIntervals();
-    this.startBonjourDiscovery();
   }
 
   startBonjourDiscovery() {
@@ -128,8 +127,8 @@ class DeviceDiscovery extends EventEmitter {
   cleanup() {
     // Clear all intervals
     if (this.browser) {
-        this.browser.stop();
-      }
+      this.browser.stop();
+    }
     this.intervals.forEach((intervalId) => clearInterval(intervalId));
   }
 }
