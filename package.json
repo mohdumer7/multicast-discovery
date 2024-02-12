@@ -1,6 +1,6 @@
 {
   "name": "multicast-device-discovery",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "This is a package to find nearby available devices to multicast",
   "main": "src/index.js",
   "scripts": {},
@@ -10,8 +10,11 @@
   "author": "Mohammed Umer",
   "license": "ISC",
   "dependencies": {
+    "adbkit": "^2.11.1",
     "bonjour": "^3.5.0",
-    "events": "^3.3.0"
-  },
-  "devDependencies": {}
+    "debug": "^4.3.4",
+    "events": "^3.3.0",
+    "fix-path": "^4.0.0",
+    "scrcpy": "^1.1.6"
+  }
 }

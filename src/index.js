@@ -1,6 +1,7 @@
 const EventEmitter = require("events");
 const bonjour = require("bonjour")({ interval: 1000 });
-
+const adb = require("../main/adb");
+const scrcpy = require("../main/scrcpy");
 class DeviceDiscovery extends EventEmitter {
   static SERVICEUP = "Service Up";
   static SERVICEDOWN = "Service Down";
@@ -133,4 +134,49 @@ class DeviceDiscovery extends EventEmitter {
   }
 }
 
-module.exports = DeviceDiscovery;
+const options = {
+  deviceTimeoutThreshold: 3000,
+  serviceType: "adb-tls-connect",
+};
+const deviceDiscovery = new DeviceDiscovery(options);
+
+deviceDiscovery.on("Update", (devices) => {
+  console.log(devices);
+  if (devices.devices[0]) {
+    const id = devices.devices[0].name.split("-")[1];
+    const ip = devices.devices[0].referer.address;
+    const id1 = [{ id: String(`${ip}:5555`), type: "device" }];
+    adb.onDevices();
+    const config = {
+      source: `C:\\scrcpy`,
+      title: "scrcpy",
+      bitRate: 8,
+      maxSize: 0,
+      maxFps: 30,
+      window: {
+        x: 0,
+        y: 0,
+        height: 100,
+        width: 100,
+      },
+    };
+    // adb.connect(args);
+    adb.connect({ id, ip });
+
+    console.log(id1);
+    scrcpy.open({
+      config,
+      devices: [{ id: "192.168.1.12:5555", type: "device" }],
+    });
+  } else {
+    console.log("No Devices Found!");
+  }
+});
+
+deviceDiscovery.on("Device Discovery Error", (error) => {
+  console.error(`An error occurred: ${error}`);
+});
+
+deviceDiscovery.startDeviceDiscovery();
+
+// module.exports = DeviceDiscovery;
