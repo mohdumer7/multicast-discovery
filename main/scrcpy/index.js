@@ -1,10 +1,8 @@
-const debug = require("debug")("scrcpy");
-// const fixPath = require("fix-path");
-// fixPath();
+const debug = require("debug");
 const fs = require("fs");
 const open = (options) => {
   const args = [];
-  const { config, devices } = options;
+  const { config, devices, event } = options;
   const {
     title,
     source,
@@ -42,7 +40,7 @@ const open = (options) => {
     args.push(title);
   }
 
-  args.push("--no-playback");
+  // args.push("--no-playback");
 
   if (screen) {
     args.push("--turn-screen-off");
@@ -106,7 +104,6 @@ const open = (options) => {
   const args1 = ["--no-audio"];
   devices.forEach(({ id }) => {
     const { spawn } = require("child_process");
-    console.log(cmd, [...args, "-s", `${id}`]);
     const scrcpy = spawn(cmd, [...args1, "-s", `${id}`]);
 
     scrcpy.stderr.on("data", (data) => {
@@ -120,6 +117,8 @@ const open = (options) => {
 
     scrcpy.on("close", (code) => {
       console.log(`child process closed with code ${code}`);
+
+      event.emit(`casting down`, id.split(":")[1]);
     });
 
     scrcpy.on("exit", (code) => {
@@ -127,7 +126,7 @@ const open = (options) => {
 
       console.log("close", { success: code === 0, id });
       scrcpy.kill();
-      exited = true;
+      event.emit(`casting down`, id.split(":")[1]);
     });
   });
 };

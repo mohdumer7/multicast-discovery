@@ -1,7 +1,6 @@
 const adb = require("adbkit");
+const debug = require("debug");
 const client = adb.createClient();
-const debug = require("debug")("scrcpy");
-
 const onDevices = () => {
   client
     .trackDevices()
@@ -26,61 +25,27 @@ const onDevices = () => {
       });
     })
     .catch(function (err) {
-      debugor("Something went wrong:", err.stack);
+      debug("Something went wrong:", err.stack);
     });
 };
-const connect = (args) => {
-  const { id, ip } = args;
+
+const connect = async (args) => {
+  const { id, ip, port } = args;
   const success = "Successfully opened wireless connection";
   const fail = "Failed to open wireless connection";
-  if (id) {
-    client
-      .tcpip(id)
-      .then(function (port) {
-        client
-          .connect(ip, port)
-          .then(function (err) {
-            if (err) {
-              console.log("connect Error", {
-                success: false,
-                message: fail,
-                stack: err,
-              });
-              return;
-            }
-            console.log("connect", { success: true, message: success });
-          })
-          .catch((stack) => {
-            console.log("connect", { success: false, message: fail, stack });
-          });
-      })
-      .catch(() => {
-        client
-          .connect(ip)
-          .then(function (err) {
-            if (err) {
-              console.log("connect", { success: false, message: fail });
-              return;
-            }
-            console.log("connect", { success: true, message: success });
-          })
-          .catch(() => {
-            console.log("connect", { success: false, message: fail });
-          });
-      });
-  } else {
-    client
-      .connect(ip)
-      .then(function (err) {
-        if (err) {
-          console.log("connect", { success: false, message: fail });
-          return;
-        }
-        console.log("connect", { success: true, message: success });
-      })
-      .catch(() => {
-        console.log("connect", { success: false, message: fail });
-      });
+
+  // console.log("Connecting to", ip, "on port", port);
+
+  try {
+    // console.log("Attempting to connect to", ip, "on port", port);
+    await client.connect(ip, port);
+    console.log("connect", { success: true, message: success });
+  } catch (err) {
+    console.error("Connection error", {
+      success: false,
+      message: fail,
+      stack: err,
+    });
   }
 };
 

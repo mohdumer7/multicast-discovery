@@ -1,5 +1,6 @@
 const EventEmitter = require("events");
 const bonjour = require("bonjour")({ interval: 1000 });
+let screenCastDevices = [];
 const adb = require("../main/adb");
 const scrcpy = require("../main/scrcpy");
 class DeviceDiscovery extends EventEmitter {
@@ -79,8 +80,6 @@ class DeviceDiscovery extends EventEmitter {
   checkDeviceTimeouts() {
     try {
       const currentTime = Date.now();
-
-      // Filter out devices that haven't been updated within the threshold
       this.devices = this.devices.filter((device) => {
         const isNotTimeout =
           currentTime - device.lastUpdateTime <= this.deviceTimeoutThreshold;
@@ -141,36 +140,60 @@ const options = {
 const deviceDiscovery = new DeviceDiscovery(options);
 
 deviceDiscovery.on("Update", (devices) => {
-  console.log(devices);
-  if (devices.devices[0]) {
-    const id = devices.devices[0].name.split("-")[1];
-    const ip = devices.devices[0].referer.address;
-    const id1 = [{ id: String(`${ip}:5555`), type: "device" }];
-    adb.onDevices();
-    const config = {
-      source: `C:\\scrcpy`,
-      title: "scrcpy",
-      bitRate: 8,
-      maxSize: 0,
-      maxFps: 30,
-      window: {
-        x: 0,
-        y: 0,
-        height: 100,
-        width: 100,
-      },
-    };
-    // adb.connect(args);
-    adb.connect({ id, ip });
+  // console.log(devices.devices);
+  devices.devices.forEach((device, index) => {
+    const id = device.name.split("-")[1];
+    const ip = device.referer.address;
+    const port = device.port;
 
-    console.log(id1);
-    scrcpy.open({
-      config,
-      devices: [{ id: "192.168.1.12:5555", type: "device" }],
-    });
-  } else {
-    console.log("No Devices Found!");
-  }
+    if (!screenCastDevices.includes(port)) {
+      // adb.onDevices();
+      console.log(`Device ${index + 1} Connected`);
+      const config = {
+        source: `C:\\scrcpy`,
+        title: "scrcpy",
+        bitRate: 8,
+        maxSize: 0,
+        maxFps: 30,
+        window: {
+          x: 0,
+          y: 0,
+          height: 100,
+          width: 100,
+        },
+      };
+      // adb.connect(args);
+      adb
+        .connect({ id, ip, port })
+        .then(() => {
+          console.log(`Casting Device ${index + 1}`);
+
+          const scrId = String(`${ip}:${port}`);
+          const event = new EventEmitter();
+          event.on(`casting down`, (port) => {
+            console.log("Removing Device");
+            screenCastDevices = screenCastDevices.filter(
+              (devicePort) => devicePort != Number(port)
+            );
+          });
+          scrcpy.open({
+            config,
+            devices: [{ id: scrId, type: "device" }],
+            event,
+          });
+          console.log("---------------------------");
+          screenCastDevices.push(port);
+        })
+        .catch((err) =>
+          console.log({
+            status: "Error",
+            Error: err,
+            message:
+              "Generally Connection Errors occur due to authorisation, Please Connect to your PC once and authorise",
+          })
+        );
+    }
+  });
 });
 
 deviceDiscovery.on("Device Discovery Error", (error) => {
@@ -178,5 +201,5 @@ deviceDiscovery.on("Device Discovery Error", (error) => {
 });
 
 deviceDiscovery.startDeviceDiscovery();
-
+console.log("Discovery Started....");
 // module.exports = DeviceDiscovery;
