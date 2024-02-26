@@ -1,5 +1,6 @@
 const debug = require("debug");
 const fs = require("fs");
+const { captureScreen } = require("../adb");
 const open = (options) => {
   const args = [];
   const { config, devices, event } = options;
@@ -106,9 +107,12 @@ const open = (options) => {
     const { spawn } = require("child_process");
     const scrcpy = spawn(cmd, [...args1, "-s", `${id}`]);
 
-    scrcpy.stderr.on("data", (data) => {
-      console.error(`stderr: ${data}`);
+    scrcpy.stdout.on("data", (data) => {
+      console.log(data.toString());
     });
+    // scrcpy.stderr.on("data", (data) => {
+    //   console.error(`stderr: ${data}`);
+    // });
 
     scrcpy.on("error", (err) => {
       console.error(`Error: ${err.message}`);

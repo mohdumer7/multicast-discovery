@@ -176,11 +176,11 @@ deviceDiscovery.on("Update", (devices) => {
               (devicePort) => devicePort != Number(port)
             );
           });
-          scrcpy.open({
-            config,
-            devices: [{ id: scrId, type: "device" }],
-            event,
-          });
+          // scrcpy.open({
+          //   config,
+          //   devices: [{ id: scrId, type: "device" }],
+          //   event,
+          // });
           console.log("---------------------------");
           screenCastDevices.push(port);
         })

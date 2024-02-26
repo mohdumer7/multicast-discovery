@@ -1,6 +1,7 @@
 const adb = require("adbkit");
 const debug = require("debug");
 const client = adb.createClient();
+const { exec } = require("child_process");
 const onDevices = () => {
   client
     .trackDevices()
@@ -68,8 +69,29 @@ const disconnect = (ip) => {
     });
 };
 
+const captureScreen = (deviceId) => {
+  const streamingUrl = `rtmp://localhost/live/ADBSCRCPY`;
+
+  const adbCommand = `adb -s ${deviceId} shell screenrecord --output-format=h264 - | ffmpeg -re -i - -c:v libx264 -b:v 1M -preset ultrafast -tune zerolatency -f flv ${streamingUrl}`;
+
+  const adbProcess = exec(adbCommand);
+
+  adbProcess.stdout.on("data", (data) => {
+    console.log(data.toString());
+  });
+
+  adbProcess.stderr.on("data", (data) => {
+    console.error(data.toString());
+  });
+
+  adbProcess.on("exit", (code) => {
+    console.log(`ADB process exited with code ${code}`);
+  });
+};
+
 module.exports = {
   connect,
   disconnect,
   onDevices,
+  captureScreen,
 };

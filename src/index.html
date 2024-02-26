@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen Streaming Example</title>
+  </head>
+  <body>
+    <h1>Screen Streaming Example</h1>
+
+    <script>
+      const socket = new WebSocket("ws://localhost:3001");
+
+      socket.onmessage = (event) => {
+        // Handle received screen content here
+        console.log("Received data:", event.data);
+        // You may need to process the data and update your UI accordingly
+      };
+    </script>
+  </body>
+</html>
