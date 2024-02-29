@@ -1,4 +1,4 @@
-# device-dicovery
+# device-discovery
 
 The provided code utilizes the Bonjour protocol to discover nearby devices on the same network as the server is connected to. The application continuously listens for Bonjour events related to a custom service type. The discovered devices are tracked and stored in an array, including their relevant information such as address, fully qualified domain name (fqdn), and the timestamp of the last update.
 
